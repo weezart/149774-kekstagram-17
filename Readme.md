@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Андрей Калашников](https://up.htmlacademy.ru/javascript/17/user/149774).
-* Наставник: `Неизвестно`.
+* Наставник: [Иван Захарченко](https://up.htmlacademy.ru/javascript/17/user/1033227).
 
 ---
 
