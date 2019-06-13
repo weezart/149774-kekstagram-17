@@ -24,20 +24,22 @@ var getImageUrl = function (filename) {
 };
 
 var getRandomArbitary = function (min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+var compareRandom = function () {
+  return Math.random() - 0.5;
 };
 
 var getRandomValues = function (arr) {
   var newArr = [];
   var randomCount = getRandomArbitary(MIN_COMMENTS, MAX_COMMENTS);
-  var compareRandom = function () {
-    return Math.random() - 0.5;
-  };
   for (var i = 0; i < arr.length; i++) {
     newArr[i] = arr[i];
   }
+
   newArr.sort(compareRandom);
-  return newArr.splice(0, randomCount);
+  return newArr.slice(0, randomCount);
 };
 
 var getDataPictures = function (count) {
