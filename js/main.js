@@ -23,8 +23,17 @@ var getImageUrl = function (filename) {
   return 'photos/' + filename + '.jpg';
 };
 
-var getRandomArbitary = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+
+var getRandomIntegerRound = function (min, max) {
+  var rand = Math.random() * (max - min + 1) - 0.5;
+  rand = min + Math.round(rand);
+  return rand;
+};
+
+var getRandomIntegerFloor = function (min, max) {
+  var rand = Math.random() * (max - min + 1);
+  rand = min + Math.floor(rand);
+  return rand;
 };
 
 var compareRandom = function () {
@@ -33,7 +42,7 @@ var compareRandom = function () {
 
 var getRandomValues = function (arr) {
   var newArr = [];
-  var randomCount = getRandomArbitary(MIN_COMMENTS, MAX_COMMENTS);
+  var randomCount = getRandomIntegerRound(MIN_COMMENTS, MAX_COMMENTS);
   for (var i = 0; i < arr.length; i++) {
     newArr[i] = arr[i];
   }
@@ -47,7 +56,7 @@ var getDataPictures = function (count) {
   for (var i = 0; i < count; i++) {
     dataPictures[i] = {
       'url': getImageUrl(i + 1),
-      'likes': getRandomArbitary(MIN_LIKES, MAX_LIKES),
+      'likes': getRandomIntegerFloor(MIN_LIKES, MAX_LIKES),
       'comments': getRandomValues(COMMENTS)
     };
   }
