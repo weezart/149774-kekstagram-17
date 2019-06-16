@@ -14,6 +14,8 @@ var MAX_LIKES = 200;
 var MIN_COMMENTS = 1;
 var MAX_COMMENTS = 2;
 var COUNT_PICTURES = 25;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 var pictureTemplate = document.querySelector('template').content.querySelector('.picture');
 var pictureFragment = document.createDocumentFragment();
@@ -22,7 +24,6 @@ var pictures = document.querySelector('.pictures');
 var getImageUrl = function (filename) {
   return 'photos/' + filename + '.jpg';
 };
-
 
 var getRandomIntegerRound = function (min, max) {
   var rand = Math.random() * (max - min + 1) - 0.5;
@@ -81,6 +82,40 @@ var insertPictures = function (dataPictures) {
   pictures.appendChild(pictureFragment);
 };
 
+var onPicturePreviewEnterPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePicturePreview();
+  }
+};
+
+var onPicturePreviewEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePicturePreview();
+  }
+};
+
+var onPicturePreviewClickClose = function () {
+  previewPictureClose.addEventListener('keydown', onPicturePreviewEnterPress);
+  previewPictureClose.addEventListener('click', closePicturePreview);
+  document.removeEventListener('keydown', onPicturePreviewEscPress);
+};
+
+var closePicturePreview = function () {
+  previewPicture.classList.add('hidden');
+  pictureUpload.value = '';
+  previewPictureClose.removeEventListener('keydown', onPicturePreviewEnterPress);
+};
+
+var uploadPicture = function () {
+  previewPicture.classList.remove('hidden');
+  onPicturePreviewClickClose();
+  document.addEventListener('keydown', onPicturePreviewEscPress);
+};
+
 var dataPictures = getDataPictures(COUNT_PICTURES);
+var pictureUpload = document.querySelector('#upload-file');
+var previewPicture = document.querySelector('.img-upload__overlay');
+var previewPictureClose = previewPicture.querySelector('.img-upload__cancel');
 
 insertPictures(dataPictures);
+pictureUpload.addEventListener('change', uploadPicture);
