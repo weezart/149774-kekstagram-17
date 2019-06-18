@@ -174,7 +174,7 @@ var sizeDec = previewPicture.querySelector('.scale__control--smaller');
 var sizeInc = previewPicture.querySelector('.scale__control--bigger');
 var sizeValue = previewPicture.querySelector('.scale__control--value');
 var imageEffects = previewPicture.querySelector('.effects');
-var imageEffectPin =previewPicture.querySelector('.effect-level__pin');
+var imageEffectPin = previewPicture.querySelector('.effect-level__pin');
 
 insertPictures(dataPictures);
 pictureUpload.addEventListener('change', uploadPicture);
