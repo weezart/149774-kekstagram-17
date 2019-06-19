@@ -31,13 +31,17 @@ var getImageUrl = function (filename) {
 
 var getRandomIntegerRound = function (min, max) {
   var rand = Math.random() * (max - min + 1) - 0.5;
+
   rand = min + Math.round(rand);
+
   return rand;
 };
 
 var getRandomIntegerFloor = function (min, max) {
   var rand = Math.random() * (max - min + 1);
+
   rand = min + Math.floor(rand);
+
   return rand;
 };
 
@@ -48,16 +52,19 @@ var compareRandom = function () {
 var getRandomValues = function (arr) {
   var newArr = [];
   var randomCount = getRandomIntegerRound(MIN_COMMENTS, MAX_COMMENTS);
+
   for (var i = 0; i < arr.length; i++) {
     newArr[i] = arr[i];
   }
 
   newArr.sort(compareRandom);
+
   return newArr.slice(0, randomCount);
 };
 
 var getDataPictures = function (count) {
   var dataPictures = [];
+
   for (var i = 0; i < count; i++) {
     dataPictures[i] = {
       'url': getImageUrl(i + 1),
@@ -71,6 +78,7 @@ var getDataPictures = function (count) {
 
 var renderPicture = function (dataPicture) {
   var picture = pictureTemplate.cloneNode(true);
+
   picture.setAttribute('tabindex', '0');
   picture.querySelector('.picture__img').src = dataPicture.url;
   picture.querySelector('.picture__likes').textContent = dataPicture.likes;
@@ -83,6 +91,7 @@ var insertPictures = function (dataPictures) {
   for (var i = 0; i < dataPictures.length; i++) {
     pictureFragment.appendChild(renderPicture(dataPictures[i]));
   }
+
   pictures.appendChild(pictureFragment);
 };
 
@@ -113,15 +122,19 @@ var closePicturePreview = function () {
 var resizePicture = function () {
   sizeValue.value = '100%';
   previewImage.style.removeProperty('transform');
+
   sizeDec.addEventListener('click', function () {
     var pictureSize = parseInt(sizeValue.value, DEC) - PICTURE_RESIZE_STEP;
+
     if (pictureSize >= PICTURE_MIN_SIZE) {
       sizeValue.value = pictureSize + '%';
       previewImage.style.transform = 'scale(' + pictureSize / PICTURE_MAX_SIZE + ')';
     }
   });
+
   sizeInc.addEventListener('click', function () {
     var pictureSize = parseInt(sizeValue.value, DEC) + PICTURE_RESIZE_STEP;
+
     if (pictureSize <= PICTURE_MAX_SIZE) {
       sizeValue.value = pictureSize + '%';
       previewImage.style.transform = 'scale(' + pictureSize / PICTURE_MAX_SIZE + ')';
@@ -131,6 +144,7 @@ var resizePicture = function () {
 
 var changeEffects = function () {
   var effects = imageEffects.querySelectorAll('.effects__radio');
+
   for (var i = 0; i < effects.length; i++) {
     if (effects[i].checked) {
       switch (effects[i].value) {
