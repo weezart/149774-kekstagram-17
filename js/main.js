@@ -20,6 +20,8 @@ var PICTURE_RESIZE_STEP = 25;
 var PICTURE_MIN_SIZE = 25;
 var PICTURE_MAX_SIZE = 100;
 var DEC = 10;
+var DESCRIPTION_MAX_LENGTH = 140;
+var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
 
 var pictureTemplate = document.querySelector('template').content.querySelector('.picture');
 var pictureFragment = document.createDocumentFragment();
@@ -179,6 +181,24 @@ var uploadPicture = function () {
   document.addEventListener('keydown', onPicturePreviewEscPress);
 };
 
+var onUploadFormSubmit = function () {
+  uploadDescription.addEventListener('input', validateUploadDescription);
+  uploadDescription.addEventListener('focus', function () {
+    document.removeEventListener('keydown', onPicturePreviewEscPress);
+  });
+  uploadDescription.addEventListener('blur', function () {
+    document.addEventListener('keydown', onPicturePreviewEscPress);
+  });
+};
+
+var validateUploadDescription = function (evt) {
+  if (evt.target.value.length > DESCRIPTION_MAX_LENGTH) {
+    evt.target.setCustomValidity('Длина комментария не должна превышать ' + DESCRIPTION_MAX_LENGTH + ' символов');
+  } else {
+    evt.target.setCustomValidity('');
+  }
+};
+
 var dataPictures = getDataPictures(COUNT_PICTURES);
 var pictureUpload = document.querySelector('#upload-file');
 var previewPicture = document.querySelector('.img-upload__overlay');
@@ -189,6 +209,10 @@ var sizeInc = previewPicture.querySelector('.scale__control--bigger');
 var sizeValue = previewPicture.querySelector('.scale__control--value');
 var imageEffects = previewPicture.querySelector('.effects');
 var imageEffectPin = previewPicture.querySelector('.effect-level__pin');
+var uploadForm = document.querySelector('.img-upload__form');
+var uploadDescription = uploadForm.querySelector('.text__description');
+onUploadFormSubmit();
+uploadForm.action = UPLOAD_URL;
 
 insertPictures(dataPictures);
 pictureUpload.addEventListener('change', uploadPicture);
