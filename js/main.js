@@ -27,33 +27,10 @@ var pictureTemplate = document.querySelector('template').content.querySelector('
 var pictureFragment = document.createDocumentFragment();
 var pictures = document.querySelector('.pictures');
 
-var getImageUrl = function (filename) {
-  return 'photos/' + filename + '.jpg';
-};
-
-var getRandomIntegerRound = function (min, max) {
-  var rand = Math.random() * (max - min + 1) - 0.5;
-
-  rand = min + Math.round(rand);
-
-  return rand;
-};
-
-var getRandomIntegerFloor = function (min, max) {
-  var rand = Math.random() * (max - min + 1);
-
-  rand = min + Math.floor(rand);
-
-  return rand;
-};
-
-var compareRandom = function () {
-  return Math.random() - 0.5;
-};
 
 var getRandomValues = function (arr) {
   var newArr = [];
-  var randomCount = getRandomIntegerRound(MIN_COMMENTS, MAX_COMMENTS);
+  var randomCount = window.utils.getRandomIntegerRound(MIN_COMMENTS, MAX_COMMENTS);
 
   for (var i = 0; i < arr.length; i++) {
     newArr[i] = arr[i];
@@ -70,7 +47,7 @@ var getDataPictures = function (count) {
   for (var i = 0; i < count; i++) {
     dataPictures[i] = {
       'url': getImageUrl(i + 1),
-      'likes': getRandomIntegerFloor(MIN_LIKES, MAX_LIKES),
+      'likes': window.utils.getRandomIntegerRound(MIN_LIKES, MAX_LIKES),
       'comments': getRandomValues(COMMENTS)
     };
   }
