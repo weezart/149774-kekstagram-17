@@ -21,10 +21,10 @@
   window.data = {
     get: function (count) {
       var dataPictures = [];
-      for (var i = 1; i <= count; i++) {
+      for (var i = 0; i < count; i++) {
         dataPictures[i] = {
-          'url': getImageUrl(i),
-          'likes': window.utils.getRandomArbitary(MIN_LIKES, MAX_LIKES),
+          'url': getImageUrl(i + 1),
+          'likes': window.utils.getRandomIntegerRound(MIN_LIKES, MAX_LIKES),
           'comments': window.utils.getRandomValues(COMMENTS, MIN_COMMENTS, MAX_COMMENTS)
         };
       }

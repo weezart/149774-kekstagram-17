@@ -17,10 +17,7 @@
         window.preview.show(dataPicture);
       });
       picture.addEventListener('keydown', function (evt) {
-
-        if (evt.keyCode === ENTER_KEYCODE) {
-          window.preview.show(dataPicture);
-        }
+        window.utils.isEnterEvent(evt, window.preview.show(dataPicture));
       });
     },
     onPopupCloseEnterPress: function (evt) {
