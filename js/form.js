@@ -5,7 +5,6 @@
   var PICTURE_MAX_SIZE = 100;
   var DEC = 10;
   var DESCRIPTION_MAX_LENGTH = 140;
-  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
 
   var resizePicture = function () {
     sizeValue.value = '100%';
@@ -115,6 +114,17 @@
     uploadDescription.addEventListener('blur', function () {
       document.addEventListener('keydown', window.handlers.onPopupEscPress);
     });
+    sendForm();
+  };
+
+  var sendForm = function () {
+    uploadForm.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.backend.save(new FormData(uploadForm), function () {
+        window.form.hide();
+        uploadForm.reset();
+      }, window.backend.onError);
+    });
   };
 
   window.form = {
@@ -154,6 +164,5 @@
   pictureUpload.addEventListener('change', window.form.show);
   imageEffectLevelPin.addEventListener('mousedown', onEffectPinChange);
   onUploadFormSubmit();
-  uploadForm.action = UPLOAD_URL;
 
 })();
