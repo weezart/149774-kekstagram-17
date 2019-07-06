@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var COUNT_PICTURES = 25;
 
   var pictureTemplate = document.querySelector('template').content.querySelector('.picture');
 
@@ -25,6 +24,10 @@
     pictures.appendChild(pictureFragment);
   };
 
-  var dataPictures = window.data.get(COUNT_PICTURES);
-  insertPictures(dataPictures);
+  var onSuccessLoad = function (data) {
+    window.data.pictures = data;
+    insertPictures(window.data.pictures);
+  };
+
+  window.backend.load(onSuccessLoad, window.backend.onError);
 })();
