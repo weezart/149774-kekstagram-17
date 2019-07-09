@@ -17,17 +17,32 @@
     var pictureFragment = document.createDocumentFragment();
     var pictures = document.querySelector('.pictures');
     for (var i = 0; i < dataPictures.length; i++) {
-      var picture = renderPicture(dataPictures[i]);
-      window.handlers.addPictureOpenHandlers(picture, dataPictures[i]);
-      pictureFragment.appendChild(picture);
+      window.gallery.items[i] = renderPicture(dataPictures[i]);
+      window.handlers.addPictureOpenHandlers(window.gallery.items[i], dataPictures[i]);
+      pictureFragment.appendChild(window.gallery.items[i]);
     }
     pictures.appendChild(pictureFragment);
+    window.filters.activate();
   };
 
   var onSuccessLoad = function (data) {
     window.data.pictures = data;
     insertPictures(window.data.pictures);
+    window.filters.init();
   };
 
   window.backend.load(onSuccessLoad, window.backend.onError);
+
+  window.gallery = {
+    items: [],
+    clean: function () {
+      this.items.forEach(function (item) {
+        item.remove();
+      });
+      this.length = 0;
+    },
+    fill: function (data) {
+      insertPictures(data);
+    }
+  };
 })();
