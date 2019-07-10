@@ -141,13 +141,53 @@
     sendForm();
   };
 
+  var showSuccessMessage = function () {
+    var messageFragment = document.createDocumentFragment();
+    var message = successTemplate.cloneNode(true);
+
+    messageFragment.appendChild(message);
+    document.querySelector('main').appendChild(messageFragment);
+    var closeButton = message.querySelector('.success__button');
+    var closeMessage = function () {
+      document.querySelector('main .success').remove();
+    };
+    var closeMessageEsc = function (evt) {
+      window.utils.isEscEvent(evt, closeMessage);
+    };
+
+    closeButton.addEventListener('click', closeMessage);
+    document.addEventListener('keydown', closeMessageEsc);
+  };
+
+  var showErrorMessage = function () {
+    var messageFragment = document.createDocumentFragment();
+    var message = errorTemplate.cloneNode(true);
+    window.form.hide();
+
+    messageFragment.appendChild(message);
+    document.querySelector('main').appendChild(messageFragment);
+    var closeButton = message.querySelectorAll('.error__button');
+    var closeMessage = function () {
+      document.querySelector('main .error').remove();
+    };
+    for (var i = 0; i < closeButton.length; i++) {
+      closeButton[i].addEventListener('click', closeMessage);
+    }
+    var closeMessageEsc = function (evt) {
+      window.utils.isEscEvent(evt, closeMessage);
+    };
+    document.addEventListener('keydown', closeMessageEsc);
+  };
+
   var sendForm = function () {
+
     uploadForm.addEventListener('submit', function (evt) {
       evt.preventDefault();
       window.backend.save(new FormData(uploadForm), function () {
         window.form.hide();
         uploadForm.reset();
-      }, window.backend.onError);
+        showSuccessMessage();
+      }, showErrorMessage);
     });
   };
 
@@ -185,6 +225,8 @@
   var uploadForm = document.querySelector('.img-upload__form');
   var uploadHashtags = uploadForm.querySelector('.text__hashtags');
   var uploadDescription = uploadForm.querySelector('.text__description');
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
   pictureUpload.addEventListener('change', window.form.show);
   imageEffectLevelPin.addEventListener('mousedown', onEffectPinChange);
