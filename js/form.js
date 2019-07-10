@@ -5,6 +5,8 @@
   var PICTURE_MAX_SIZE = 100;
   var DEC = 10;
   var DESCRIPTION_MAX_LENGTH = 140;
+  var TAGS_MAX_NUMBER = 5;
+  var TAG_MAX_LENGTH = 20;
 
   var resizePicture = function () {
     sizeValue.value = '100%';
@@ -98,6 +100,27 @@
     return x;
   };
 
+  var validateUploadHashtags = function (evt) {
+    var tags = evt.target.value.split(' ');
+    var usedTags = {};
+    evt.target.setCustomValidity('');
+    tags.forEach(function (tag) {
+      if (tag[0] !== '#') {
+        evt.target.setCustomValidity('Хэш-тег должен начинаться с символа #');
+      }
+      if (tag.length > TAG_MAX_LENGTH) {
+        evt.target.setCustomValidity('Максимальная длина одного хэш-тега равна 20 символов');
+      }
+      if (tag in usedTags) {
+        evt.target.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+      }
+      usedTags[tag] = true;
+    });
+    if (tags.length > TAGS_MAX_NUMBER) {
+      evt.target.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+    }
+  };
+
   var validateUploadDescription = function (evt) {
     if (evt.target.value.length > DESCRIPTION_MAX_LENGTH) {
       evt.target.setCustomValidity('Длина комментария не должна превышать 140 символов');
@@ -107,6 +130,7 @@
   };
 
   var onUploadFormSubmit = function () {
+    uploadHashtags.addEventListener('input', validateUploadHashtags);
     uploadDescription.addEventListener('input', validateUploadDescription);
     uploadDescription.addEventListener('focus', function () {
       document.removeEventListener('keydown', window.handlers.onPopupEscPress);
@@ -159,6 +183,7 @@
   var imageEffectDepth = previewPicture.querySelector('.effect-level__depth');
   var imageEffectLevelInput = previewPicture.querySelector('.effect-level__value');
   var uploadForm = document.querySelector('.img-upload__form');
+  var uploadHashtags = uploadForm.querySelector('.text__hashtags');
   var uploadDescription = uploadForm.querySelector('.text__description');
 
   pictureUpload.addEventListener('change', window.form.show);
