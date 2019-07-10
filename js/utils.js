@@ -17,6 +17,11 @@
         action();
       }
     },
+    getRandomIntegerRound: function (min, max) {
+      var rand = Math.random() * (max - min + 1) - 0.5;
+      rand = min + Math.round(rand);
+      return rand;
+    },
     compareRandom: function () {
       return Math.random() - 0.5;
     },
