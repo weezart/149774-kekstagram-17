@@ -36,6 +36,8 @@
       preview.querySelector('.social__caption').textContent = dataPicture.description;
       preview.querySelector('.likes-count').textContent = dataPicture.likes;
       preview.querySelector('.comments-count').textContent = dataPicture.comments.length;
+      preview.querySelector('.social__comment-count').classList.add('visually-hidden');
+      preview.querySelector('.comments-loader').classList.add('visually-hidden');
       commentsList.textContent = '';
       if (dataPicture.comments.length <= COMMENTS_STEP) {
         preview.querySelector('.comments-step').textContent = dataPicture.comments.length;
@@ -49,8 +51,6 @@
       }
       window.handlers.onPopupClickClose(previewClose);
       this.status = true;
-      preview.querySelector('.social__comment-count').classList.add('visually-hidden');
-      preview.querySelector('.comments-loader').classList.add('visually-hidden');
     },
     hide: function () {
       preview.classList.add('hidden');
