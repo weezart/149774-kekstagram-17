@@ -8,9 +8,13 @@
   var TAGS_MAX_NUMBER = 5;
   var TAG_MAX_LENGTH = 20;
 
+  var choosePicture = function (previewElement, src) {
+    previewElement.src = src;
+    window.form.show();
+  };
+
   var resizePicture = function () {
     sizeValue.value = '100%';
-    previewImage.style.removeProperty('transform');
 
     sizeDec.addEventListener('click', function () {
       var pictureSize = parseInt(sizeValue.value, DEC) - PICTURE_RESIZE_STEP;
@@ -185,7 +189,6 @@
       evt.preventDefault();
       window.backend.save(new FormData(uploadForm), function () {
         window.form.hide();
-        uploadForm.reset();
         showSuccessMessage();
       }, showErrorMessage);
     });
@@ -206,6 +209,15 @@
       previewPictureClose.removeEventListener('keydown', window.handlers.onPopupCloseEnterPress);
       pictureUpload.value = '';
       window.form.status = false;
+      this.reset();
+    },
+    reset: function () {
+      uploadForm.reset();
+      imageEffectDepth.style = '';
+      previewImage.style = '';
+      imageEffectLevelInput.value = '';
+      imageEffectLevelPin.style.left = imageEffectLevelInput.value + '%';
+      window.form.status = false;
     }
   };
 
@@ -213,6 +225,7 @@
   var previewPictureClose = previewPicture.querySelector('.img-upload__cancel');
   var previewImage = previewPicture.querySelector('.img-upload__preview img');
   var pictureUpload = document.querySelector('#upload-file');
+  var pictureUploadDropZone = document.querySelector('.img-upload__control');
   var sizeDec = previewPicture.querySelector('.scale__control--smaller');
   var sizeInc = previewPicture.querySelector('.scale__control--bigger');
   var sizeValue = previewPicture.querySelector('.scale__control--value');
@@ -229,6 +242,7 @@
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
   pictureUpload.addEventListener('change', window.form.show);
+  window.chooseImage(pictureUpload, pictureUploadDropZone, previewImage, choosePicture);
   imageEffectLevelPin.addEventListener('mousedown', onEffectPinChange);
   onUploadFormSubmit();
 
