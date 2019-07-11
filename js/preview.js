@@ -32,24 +32,31 @@
       preview.classList.remove('hidden');
       var commentNumber = 0;
       var commentsList = preview.querySelector('.social__comments');
+      var nextCommentsBtn = preview.querySelector('.social__comments-loader');
+      var showNextComments = function () {
+        var currentStep = commentNumber + COMMENTS_STEP;
+        preview.querySelector('.comments-step').textContent = currentStep;
+        for (commentNumber; commentNumber < currentStep; commentNumber++) {
+          if (commentNumber < dataPicture.comments.length) {
+            comment = renderComment(dataPicture.comments[commentNumber]);
+            commentsList.appendChild(comment);
+          }
+        }
+        if (dataPicture.comments.length <= currentStep) {
+          preview.querySelector('.comments-step').textContent = dataPicture.comments.length;
+          nextCommentsBtn.classList.add('visually-hidden');
+        } else {
+          nextCommentsBtn.classList.remove('visually-hidden');
+        }
+      };
       preview.querySelector('.big-picture__img img').src = dataPicture.url;
       preview.querySelector('.social__caption').textContent = dataPicture.description;
       preview.querySelector('.likes-count').textContent = dataPicture.likes;
       preview.querySelector('.comments-count').textContent = dataPicture.comments.length;
-      preview.querySelector('.social__comment-count').classList.add('visually-hidden');
-      preview.querySelector('.comments-loader').classList.add('visually-hidden');
       commentsList.textContent = '';
-      if (dataPicture.comments.length <= COMMENTS_STEP) {
-        preview.querySelector('.comments-step').textContent = dataPicture.comments.length;
-        preview.querySelector('.social__comments-loader').classList.add('hidden');
-      }
-      for (commentNumber; commentNumber < COMMENTS_STEP; commentNumber++) {
-        if (commentNumber < dataPicture.comments.length) {
-          comment = renderComment(dataPicture.comments[commentNumber]);
-          commentsList.appendChild(comment);
-        }
-      }
+      showNextComments();
       window.handlers.onPopupClickClose(previewClose);
+      nextCommentsBtn.addEventListener('click', showNextComments);
       this.status = true;
     },
     hide: function () {
