@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ENTER_KEYCODE = 13;
   var closePopup = function () {
     if (window.preview.status) {
       window.preview.hide();
@@ -17,7 +18,9 @@
         window.preview.show(dataPicture);
       });
       picture.addEventListener('keydown', function (evt) {
-        window.utils.isEnterEvent(evt, window.preview.show(dataPicture));
+        if (evt.keyCode === ENTER_KEYCODE) {
+          window.preview.show(dataPicture);
+        }
       });
     },
     onPopupCloseEnterPress: function (evt) {

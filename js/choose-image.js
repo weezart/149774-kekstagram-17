@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var FileType = ['gif', 'jpg', 'jpeg', 'png'];
   var DROP_COLOR = '#ff5635';
 
   var isCorrectFile = function (file) {
     if (file) {
-      return FILE_TYPES.some(function (item) {
+      return FileType.some(function (item) {
         return file.name.toLowerCase().endsWith(item);
       });
     }
