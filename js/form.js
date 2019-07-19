@@ -118,7 +118,7 @@
     return x;
   };
 
-  var validateUploadHashtags = function (evt) {
+  var validatePictureHashtags = function (evt) {
     var tags = evt.target.value.split(' ');
     var usedTags = {};
     evt.target.setCustomValidity('');
@@ -139,7 +139,7 @@
     }
   };
 
-  var validateUploadDescription = function (evt) {
+  var validatePictureDescription = function (evt) {
     if (evt.target.value.length > DESCRIPTION_MAX_LENGTH) {
       evt.target.setCustomValidity('Длина комментария не должна превышать 140 символов');
     } else {
@@ -148,12 +148,18 @@
   };
 
   var onUploadFormSubmit = function () {
-    uploadHashtags.addEventListener('input', validateUploadHashtags);
-    uploadDescription.addEventListener('input', validateUploadDescription);
-    uploadDescription.addEventListener('focus', function () {
+    pictureHashtags.addEventListener('input', validatePictureHashtags);
+    pictureHashtags.addEventListener('focus', function () {
       document.removeEventListener('keydown', window.handlers.onPopupEscPress);
     });
-    uploadDescription.addEventListener('blur', function () {
+    pictureHashtags.addEventListener('blur', function () {
+      document.addEventListener('keydown', window.handlers.onPopupEscPress);
+    });
+    pictureDescription.addEventListener('input', validatePictureDescription);
+    pictureDescription.addEventListener('focus', function () {
+      document.removeEventListener('keydown', window.handlers.onPopupEscPress);
+    });
+    pictureDescription.addEventListener('blur', function () {
       document.addEventListener('keydown', window.handlers.onPopupEscPress);
     });
     sendForm();
@@ -256,8 +262,8 @@
   var imageEffectDepth = previewPicture.querySelector('.effect-level__depth');
   var imageEffectLevelInput = previewPicture.querySelector('.effect-level__value');
   var uploadForm = document.querySelector('.img-upload__form');
-  var uploadHashtags = uploadForm.querySelector('.text__hashtags');
-  var uploadDescription = uploadForm.querySelector('.text__description');
+  var pictureHashtags = uploadForm.querySelector('.text__hashtags');
+  var pictureDescription = uploadForm.querySelector('.text__description');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
