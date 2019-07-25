@@ -118,24 +118,45 @@
     return x;
   };
 
+  var validate = function (hashtag, hashtags) {
+    var checkRepeatingHashtag = function () {
+      var numberOfRepeating = hashtags.slice().filter(function (hashtagItem) {
+        return hashtagItem.toLowerCase() === hashtag.toLowerCase();
+      }).length;
+      return numberOfRepeating > 1;
+    };
+
+    if (hashtag.indexOf('#') !== 0) {
+      pictureHashtags.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
+      return false;
+    } else if (hashtag.length === 1) {
+      pictureHashtags.setCustomValidity('хеш-тег не может состоять только из одной решётки');
+      return false;
+    } else if (hashtag.lastIndexOf('#') !== 0) {
+      pictureHashtags.setCustomValidity('хэш-теги должны разделяться пробелами');
+      return false;
+    } else if (checkRepeatingHashtag()) {
+      pictureHashtags.setCustomValidity('хэш-теги не должны повторяться');
+      return false;
+    } else if (hashtags.length > TAGS_MAX_NUMBER) {
+      pictureHashtags.setCustomValidity('хэш-тегов не может быть более пяти' + TAGS_MAX_NUMBER);
+      return false;
+    } else if (hashtag.length > TAG_MAX_LENGTH) {
+      pictureHashtags.setCustomValidity('максимальная длина одного хэш-тега ' + TAG_MAX_LENGTH + ' символов, включая решётку');
+      return false;
+    } else {
+      pictureHashtags.setCustomValidity('');
+      return true;
+    }
+  };
+
   var validatePictureHashtags = function (evt) {
-    var tags = evt.target.value.split(' ');
-    var usedTags = {};
-    evt.target.setCustomValidity('');
-    tags.forEach(function (tag) {
-      if (tag[0] !== '#') {
-        evt.target.setCustomValidity('Хэш-тег должен начинаться с символа #');
+    var hashtags = evt.target.value.split(' ');
+
+    for (var i = 0; i < hashtags.length; i++) {
+      if (!validate(hashtags[i], hashtags)) {
+        break;
       }
-      if (tag.length > TAG_MAX_LENGTH) {
-        evt.target.setCustomValidity('Максимальная длина одного хэш-тега равна 20 символов');
-      }
-      if (tag in usedTags) {
-        evt.target.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
-      }
-      usedTags[tag] = true;
-    });
-    if (tags.length > TAGS_MAX_NUMBER) {
-      evt.target.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
     }
   };
 
@@ -161,6 +182,13 @@
     });
     pictureDescription.addEventListener('blur', function () {
       document.addEventListener('keydown', window.handlers.onPopupEscPress);
+    });
+    pictureHashtags.addEventListener('invalid', function (evt) {
+      evt.target.style.border = '2px solid red';
+    });
+
+    pictureDescription.addEventListener('invalid', function (evt) {
+      evt.target.style.border = '2px solid red';
     });
     sendForm();
   };
